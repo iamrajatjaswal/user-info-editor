@@ -1,0 +1,39 @@
+  /* Make the sidebar and its parent container take full height */
+  #sidebar {
+    height: 100vh;
+    /* 100% viewport height */
+    position: sticky;
+    top: 0;
+  }
+
+  #content {
+    height: 100vh;
+    max-width: 800px;
+    /* Limit the maximum width of the content area */
+    margin: 0 auto;
+    /* Center the content horizontally */
+  }
+
+  /* Style for the sidebar list items */
+  #sidebar .nav-link {
+    border-left: 3px solid transparent;
+    padding-left: 1rem;
+  }
+
+  #sidebar .nav-link.active {
+    border-left-color: #007bff;
+    /* Border color for the active item */
+    background-color: #f8f9fa;
+    /* Background color for the active item */
+  }
+
+
+  /* Style for input fields and delete buttons */
+  .input-group {
+    margin-bottom: 1rem;
+  }
+
+  .delete-button {
+    /* color: red; */
+    cursor: pointer;
+  }
