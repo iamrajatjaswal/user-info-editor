@@ -48,7 +48,6 @@
             </button>
 
             <div class="input-group">
-              <span class="input-group-text">Team Name</span>
               <input
                 type="text"
                 class="form-control team-input"
@@ -66,27 +65,17 @@
               "
             >
               <h4>Members</h4>
-              <button class="btn btn-success add-button">+ Add Member</button>
+              <button id="addMember" class="btn btn-success add-button">+ Add Member</button>
             </div>
             <!-- Members Input Fields -->
-            <div class="input-group">
-              <span class="input-group-text">Member 1</span>
-              <input
-                type="text"
-                class="form-control member-input"
-                placeholder="Enter Member Name"
-              />
-              <button class="btn btn-danger delete-button">x</button>
-            </div>
-
-            <div class="input-group">
-              <span class="input-group-text">Member 2</span>
-              <input
-                type="text"
-                class="form-control member-input"
-                placeholder="Enter Member Name"
-              />
-              <button class="btn btn-danger delete-button">x</button>
+            <div class="team-members-container">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control member-input"
+                  placeholder="Enter Member Name"
+                />
+              </div>
             </div>
 
             <!-- Save and Reset Buttons -->

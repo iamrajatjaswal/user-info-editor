@@ -93,9 +93,29 @@ const saveForm = () => {
   // alert("Save button clicked");
 };
 
+const addMember = () => {
+  const teamMembersContainer = document.querySelector(
+    ".team-members-container"
+  );
+
+  let teamMembersHtml = `
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control member-input"
+        placeholder="Enter Member Name"
+      />
+      <button class="btn btn-danger delete-button">x</button>
+    </div>
+  `;
+
+  teamMembersContainer.innerHTML += teamMembersHtml;
+};
+
 document.addEventListener("DOMContentLoaded", function () {
   init();
 
   document.getElementById("saveButton").addEventListener("click", saveForm);
   document.getElementById("resetButton").addEventListener("click", resetForm);
+  document.getElementById("addMember").addEventListener("click", addMember);
 });
