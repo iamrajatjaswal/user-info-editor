@@ -28,6 +28,19 @@
   }
 
 
+  /* Style for the sidebar list items */
+  #sidebar .nav-link {
+    border-left: 3px solid transparent;
+    padding: 0.5rem 1rem; /* Add padding to the left and right */
+    position: relative; /* Create a relative positioning context */
+}
+
+#sidebar .nav-link.active {
+    border-left-color: #007bff; /* Border color for the active item */
+    background-color: #f8f9fa; /* Background color for the active item */
+}
+
+
   /* Style for input fields and delete buttons */
   .input-group {
     margin-bottom: 1rem;
@@ -36,4 +49,17 @@
   .delete-button {
     /* color: red; */
     cursor: pointer;
+  }
+
+  /* Style for the numbers next to items in the sidebar */
+  .number-badge {
+    position: absolute;
+    right: 0px;
+    background-color: #35a835;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
   }
