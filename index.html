@@ -28,12 +28,11 @@
               <button class="btn btn-primary mt-2 mx-2">New Team</button>
 
               <ul class="nav flex-column mt-3">
-                <li class="nav-item">
-                  <a class="nav-link active" href="#"> Team 1 <span class="number-badge">5</span></a>
+                <li class="nav-item team-list">
+                  <!-- <a class="nav-link active" href="#"> Team 1 <span class="number-badge">5</span></a>
                   <a class="nav-link " href="#"> Team 2 <span class="number-badge">3</span></a>
-                  <a class="nav-link " href="#"> Team 3 <span class="number-badge">4</span></a>
+                  <a class="nav-link " href="#"> Team 3 <span class="number-badge">4</span></a> -->
                 </li>
-                
               </ul>
             </div>
           </nav>
@@ -52,7 +51,7 @@
               <span class="input-group-text">Team Name</span>
               <input
                 type="text"
-                class="form-control"
+                class="form-control team-input"
                 placeholder="Enter Team Name"
               />
             </div>
@@ -67,14 +66,14 @@
               "
             >
               <h4>Members</h4>
-              <button class="btn btn-success add-button">+</button>
+              <button class="btn btn-success add-button">+ Add Member</button>
             </div>
             <!-- Members Input Fields -->
             <div class="input-group">
               <span class="input-group-text">Member 1</span>
               <input
                 type="text"
-                class="form-control"
+                class="form-control member-input"
                 placeholder="Enter Member Name"
               />
               <button class="btn btn-danger delete-button">x</button>
@@ -84,7 +83,7 @@
               <span class="input-group-text">Member 2</span>
               <input
                 type="text"
-                class="form-control"
+                class="form-control member-input"
                 placeholder="Enter Member Name"
               />
               <button class="btn btn-danger delete-button">x</button>
@@ -92,8 +91,8 @@
 
             <!-- Save and Reset Buttons -->
             <div class="d-flex justify-content-between">
-              <button class="btn btn-warning">Reset</button>
-              <button class="btn btn-success">Save</button>
+              <button id="resetButton" class="btn btn-warning">Reset</button>
+              <button id="saveButton" class="btn btn-success">Save</button>
             </div>
           </main>
         </div>
