@@ -4,10 +4,83 @@ const setTeamJson = (newTeam = []) => {
   localStorage.setItem("teams", JSON.stringify([...teamJson, ...newTeam]));
 };
 
+const removeActiveClassFromAllSidebarAnchors = () => {
+  const sidebarTeamAnchors = document.querySelectorAll(
+    ".sidebar-team-anchors"
+  );
+
+  // Attach the click event handler to each element with the class "myClass"
+  sidebarTeamAnchors.forEach(function (sidebarTeamAnchor) {
+    sidebarTeamAnchor.classList.remove('active');
+  });
+}
+
+const handleDisplayMainContentOnSelectedTeam = (e) => {
+  const element = e.target;
+
+  removeActiveClassFromAllSidebarAnchors();
+
+  element.classList.add('active');
+  
+  document.getElementById("main-content-title").innerHTML = "Update Team";
+
+  const teamId = Number(element.dataset.id);
+
+  localStorage.setItem("selectedTeamId", teamId);
+
+  const teams = getTeamJson();
+
+  const team = teams.find((currentTeam) => currentTeam.id === teamId);
+  // console.log(teams, 'teams')
+  // console.log(teamId, 'teamId')
+  console.log(team, "team");
+
+  document.querySelector(".team-input").value = team.name;
+
+  const teamMembersContainer = document.querySelector(
+    ".team-members-container"
+  );
+
+  let teamMembersHtml = "";
+
+  team.members.forEach((teamMemberName, index) => {
+    teamMembersHtml += `
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control member-input"
+        placeholder="Enter Member Name"
+        value="${teamMemberName}"
+      />
+      ${
+        index != 0
+          ? '<button class="btn btn-danger delete-member-button">x</button>'
+          : ""
+      }
+      
+    </div>
+  `;
+  });
+
+  teamMembersContainer.innerHTML = teamMembersHtml;
+
+  // Geting all elements with the class "delete-member-button"
+  const deleteMemberButtons = document.querySelectorAll(
+    ".delete-member-button"
+  );
+
+  // Attach the click event handler to each element with the class "myClass"
+  deleteMemberButtons.forEach(function (deleteMemberButton) {
+    deleteMemberButton.addEventListener("click", deleteMember);
+  });
+
+  document.getElementById("main-content-title").innerHTML = "Update Team";
+};
+
 const init = () => {
   // Retrieve the team data from local storage
   const teams = getTeamJson();
-  console.log(teams, "teams");
+  // console.log(teams, "teams");
 
   if (teams.length) {
     console.log(teams, teams);
@@ -15,10 +88,22 @@ const init = () => {
     const teamListSidebar = document.querySelector(".team-list");
     console.log(teamListSidebar, "teamListSidebar");
     let teamListSidebarHtml = "";
-    teams.forEach((team, index) => {
-      teamListSidebarHtml += `<a class="nav-link href="#"> ${team.name} <span class="number-badge">${team.members.length}</span></a>`;
+    teams.forEach((team) => {
+      teamListSidebarHtml += `<a class="sidebar-team-anchors nav-link" data-id="${team.id}" href="#"> ${team.name} <span class="number-badge">${team.members.length}</span></a>`;
     });
     teamListSidebar.innerHTML = teamListSidebarHtml;
+
+    const sidebarTeamAnchors = document.querySelectorAll(
+      ".sidebar-team-anchors"
+    );
+
+    // Attach the click event handler to each element with the class "myClass"
+    sidebarTeamAnchors.forEach(function (sidebarTeamAnchor) {
+      sidebarTeamAnchor.addEventListener(
+        "click",
+        handleDisplayMainContentOnSelectedTeam
+      );
+    });
   } else {
     setTeamJson();
     console.log("Team data not found in local storage.");
@@ -60,15 +145,32 @@ const resetInputValues = () => {
   }
 };
 
-// JavaScript function to handle the "Reset" button click event
+// Function to handle the "Reset" button click event
 const resetForm = () => {
   resetInputValues();
+
   // alert("Reset button clicked");
 };
 
-const getFormData = () => {};
+const resetMembersInputsOnSave = () => {
+  const teamMembersContainer = document.querySelector(
+    ".team-members-container"
+  );
 
-// JavaScript function to handle the "Save" button click event
+  let teamMembersHtml = `
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control member-input"
+        placeholder="Enter Member Name"
+      />
+    </div>
+  `;
+
+  teamMembersContainer.innerHTML = teamMembersHtml;
+};
+
+// Function to handle the "Save" button click event
 const saveForm = () => {
   const [teamName, teamMembers] = getInputValues();
 
@@ -82,14 +184,9 @@ const saveForm = () => {
 
   resetInputValues();
 
+  resetMembersInputsOnSave();
+
   init();
-
-  // console.log(teamName, "teamName");
-  // console.log(teamMemberInputNodeList, "teamMemberInputNodeList");
-  // console.log(teamMembers, "teamMembers");
-  // console.log(saveTeamData, "saveTeamData");
-
-  // // Replace this with your save logic
   // alert("Save button clicked");
 };
 
@@ -105,11 +202,30 @@ const addMember = () => {
         class="form-control member-input"
         placeholder="Enter Member Name"
       />
-      <button class="btn btn-danger delete-button">x</button>
+      <button class="btn btn-danger delete-member-button">x</button>
     </div>
   `;
 
-  teamMembersContainer.innerHTML += teamMembersHtml;
+  teamMembersContainer.insertAdjacentHTML("beforeend", teamMembersHtml);
+
+  // Geting all elements with the class "delete-member-button"
+  const deleteMemberButtons = document.querySelectorAll(
+    ".delete-member-button"
+  );
+
+  // Attach the click event handler to each element with the class "myClass"
+  deleteMemberButtons.forEach(function (deleteMemberButton) {
+    deleteMemberButton.addEventListener("click", deleteMember);
+  });
+};
+
+const deleteMember = (e) => {
+  // Find the parent element with the class "input-group"
+  const inputGroup = e.target.closest(".input-group");
+
+  if (inputGroup) {
+    inputGroup.remove();
+  }
 };
 
 document.addEventListener("DOMContentLoaded", function () {
