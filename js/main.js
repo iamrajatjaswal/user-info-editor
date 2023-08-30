@@ -14,15 +14,15 @@ const removeActiveClassFromAllSidebarAnchors = () => {
 
 const resetMainContent = () => {
   removeActiveClassFromAllSidebarAnchors();
-  
+
   localStorage.setItem("selectedTeamId", null);
 
   document.getElementById("main-content-title").innerHTML = "Create New Team";
 
-  document.querySelector('#delete-team-button-container').innerHTML = '';
+  document.querySelector("#delete-team-button-container").innerHTML = "";
 
   document.querySelector(".team-input").value = "";
-  
+
   const teamMembersContainer = document.querySelector(
     ".team-members-container"
   );
@@ -89,12 +89,28 @@ const handleDisplayMainContentOnSelectedTeam = (e) => {
 
   teamMembersContainer.innerHTML = teamMembersHtml;
 
-  document.querySelector('#delete-team-button-container').innerHTML = `
-    <button class="btn btn-danger delete-button float-end mb-3">
+  document.querySelector("#delete-team-button-container").innerHTML = `
+    <button id="delete-team-button-container" class="btn btn-danger float-end mb-3">
       Delete
     </button>
   `;
-  
+
+  document
+    .getElementById("delete-team-button-container")
+    .addEventListener("click", (e) => {
+      const teams = getTeamJson();
+      const selectedTeamIndex = teams.findIndex(
+        (selectedTeam) => selectedTeam.id === team.id
+      );
+
+      teams.splice(selectedTeamIndex, 1);
+
+      setTeamJson(teams);
+
+      resetMainContent();
+      init();
+    });
+
   // Geting all elements with the class "delete-member-button"
   const deleteMemberButtons = document.querySelectorAll(
     ".delete-member-button"
@@ -185,8 +201,6 @@ const resetForm = () => {
   // alert("Reset button clicked");
 };
 
-
-
 // Function to handle the "Save" button click event
 const saveForm = () => {
   const [teamName, teamMembers] = getInputValues();
@@ -275,5 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("saveButton").addEventListener("click", saveForm);
   document.getElementById("resetButton").addEventListener("click", resetForm);
   document.getElementById("addMember").addEventListener("click", addMember);
-  document.getElementById("newTeam").addEventListener("click", resetMainContent);
+  document
+    .getElementById("newTeam")
+    .addEventListener("click", resetMainContent);
 });
