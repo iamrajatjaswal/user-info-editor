@@ -1,27 +1,52 @@
 const getTeamJson = () => JSON.parse(localStorage.getItem("teams")) || [];
-const setTeamJson = (newTeam = []) => {
-  const teamJson = getTeamJson();
-  localStorage.setItem("teams", JSON.stringify([...teamJson, ...newTeam]));
+const setTeamJson = (teams = []) => {
+  localStorage.setItem("teams", JSON.stringify(teams));
 };
 
 const removeActiveClassFromAllSidebarAnchors = () => {
-  const sidebarTeamAnchors = document.querySelectorAll(
-    ".sidebar-team-anchors"
-  );
+  const sidebarTeamAnchors = document.querySelectorAll(".sidebar-team-anchors");
 
   // Attach the click event handler to each element with the class "myClass"
   sidebarTeamAnchors.forEach(function (sidebarTeamAnchor) {
-    sidebarTeamAnchor.classList.remove('active');
+    sidebarTeamAnchor.classList.remove("active");
   });
-}
+};
+
+const resetMainContent = () => {
+  removeActiveClassFromAllSidebarAnchors();
+  
+  localStorage.setItem("selectedTeamId", null);
+
+  document.getElementById("main-content-title").innerHTML = "Create New Team";
+
+  document.querySelector('#delete-team-button-container').innerHTML = '';
+
+  document.querySelector(".team-input").value = "";
+  
+  const teamMembersContainer = document.querySelector(
+    ".team-members-container"
+  );
+
+  let teamMembersHtml = `
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control member-input"
+        placeholder="Enter Member Name"
+      />
+    </div>
+  `;
+
+  teamMembersContainer.innerHTML = teamMembersHtml;
+};
 
 const handleDisplayMainContentOnSelectedTeam = (e) => {
   const element = e.target;
 
   removeActiveClassFromAllSidebarAnchors();
 
-  element.classList.add('active');
-  
+  element.classList.add("active");
+
   document.getElementById("main-content-title").innerHTML = "Update Team";
 
   const teamId = Number(element.dataset.id);
@@ -64,6 +89,12 @@ const handleDisplayMainContentOnSelectedTeam = (e) => {
 
   teamMembersContainer.innerHTML = teamMembersHtml;
 
+  document.querySelector('#delete-team-button-container').innerHTML = `
+    <button class="btn btn-danger delete-button float-end mb-3">
+      Delete
+    </button>
+  `;
+  
   // Geting all elements with the class "delete-member-button"
   const deleteMemberButtons = document.querySelectorAll(
     ".delete-member-button"
@@ -78,6 +109,8 @@ const handleDisplayMainContentOnSelectedTeam = (e) => {
 };
 
 const init = () => {
+  localStorage.setItem("selectedTeamId", null);
+
   // Retrieve the team data from local storage
   const teams = getTeamJson();
   // console.log(teams, "teams");
@@ -152,39 +185,47 @@ const resetForm = () => {
   // alert("Reset button clicked");
 };
 
-const resetMembersInputsOnSave = () => {
-  const teamMembersContainer = document.querySelector(
-    ".team-members-container"
-  );
 
-  let teamMembersHtml = `
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control member-input"
-        placeholder="Enter Member Name"
-      />
-    </div>
-  `;
-
-  teamMembersContainer.innerHTML = teamMembersHtml;
-};
 
 // Function to handle the "Save" button click event
 const saveForm = () => {
   const [teamName, teamMembers] = getInputValues();
 
-  const saveTeamData = {
+  const newTeam = {
     id: Date.now(),
     name: teamName,
     members: teamMembers,
   };
 
-  setTeamJson([saveTeamData]);
+  const selectedTeamId = JSON.parse(localStorage.getItem("selectedTeamId"));
+
+  const previousTeamJson = getTeamJson();
+  console.log(previousTeamJson, "previousTeamJson");
+  console.log(selectedTeamId, "selectedTeamId");
+  if (selectedTeamId) {
+    console.log("inside if");
+    const selectedTeamIndex = previousTeamJson.findIndex(
+      (team) => team.id === Number(selectedTeamId)
+    );
+    console.log(selectedTeamIndex, "selectedTeamIndex");
+
+    if (selectedTeamIndex !== -1) {
+      previousTeamJson.splice(selectedTeamIndex, 1, newTeam);
+      localStorage.setItem("selectedTeamId", null);
+
+      console.log([...previousTeamJson], "[...previousTeamJson]");
+
+      setTeamJson([...previousTeamJson]);
+    }
+  } else {
+    console.log("inside else");
+    console.log([...previousTeamJson, newTeam], "==adsfasas");
+    setTeamJson([...previousTeamJson, newTeam]);
+  }
 
   resetInputValues();
 
-  resetMembersInputsOnSave();
+  resetMainContent();
 
   init();
   // alert("Save button clicked");
@@ -234,4 +275,5 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("saveButton").addEventListener("click", saveForm);
   document.getElementById("resetButton").addEventListener("click", resetForm);
   document.getElementById("addMember").addEventListener("click", addMember);
+  document.getElementById("newTeam").addEventListener("click", resetMainContent);
 });

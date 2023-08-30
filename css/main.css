@@ -72,3 +72,8 @@
     text-align: center;
     line-height: 20px;
   }
+
+  #main-content-title {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }

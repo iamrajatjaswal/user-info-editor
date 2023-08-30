@@ -25,7 +25,7 @@
           >
             <div class="position-sticky">
               <!-- Add a "New Team" button at the top -->
-              <button class="btn btn-primary mt-2 mx-2">New Team</button>
+              <button id="newTeam" class="btn btn-primary mt-2 mx-2">New Team</button>
 
               <ul class="nav flex-column mt-3">
                 <li class="nav-item team-list">
@@ -40,12 +40,10 @@
           <!-- Content -->
           <main id="content" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <!-- Your main content goes here -->
-            <h1 id="main-content-title">Create New Team</h1>
+            <h1 id="main-content-title" >Create New Team</h1>
             <!-- Team Name Input Field -->
 
-            <button class="btn btn-danger delete-button float-end mb-3">
-              Delete
-            </button>
+            <div id="delete-team-button-container"></div>
 
             <div class="input-group">
               <input
@@ -65,7 +63,9 @@
               "
             >
               <h4>Members</h4>
-              <button id="addMember" class="btn btn-success add-button">+ Add Member</button>
+              <button id="addMember" class="btn btn-success add-button">
+                + Add Member
+              </button>
             </div>
             <!-- Members Input Fields -->
             <div class="team-members-container">
@@ -76,7 +76,6 @@
                   placeholder="Enter Member Name"
                 />
               </div>
-              
             </div>
 
             <!-- Save and Reset Buttons -->
